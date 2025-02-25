@@ -1,0 +1,4 @@
+ingress:
+  - hostname: yourcustomdomain.com
+    service: http://blog:80
+  - service: http_status:404  # Default catch-all

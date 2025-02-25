@@ -1,0 +1,16 @@
+services:
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    restart: unless-stopped
+    command: tunnel --config /etc/cloudflared/config.yml run
+    environment:
+      TUNNEL_TOKEN: <your_tunnel_token_here>
+    volumes:
+      - ./config.yml:/etc/cloudflared/config.yml:ro
+    networks:
+      - your-network
+      
+networks:
+  your-network:
+    name: your-network

@@ -1,0 +1,14 @@
+services:
+  blog:
+    image: nginx:alpine
+    container_name: blog
+    restart: unless-stopped
+    volumes:
+      - /home/pi/blog/site:/usr/share/nginx/html:ro
+      - /home/pi/blog/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - your-network
+
+networks:
+  your-network:
+    name: your-network
