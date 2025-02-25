@@ -1,0 +1,21 @@
+rpi_user := "your_rpi_user"
+rpi_hostname := "your_rpi_hostname_or_ip"
+
+# Deploy the files
+deploy:
+    rm -rf site
+    cd "../myblog" && just build && cd -
+    cp -R "../myblog/_site" site
+    rsync -ah --inplace --info=progress2 --no-perms --exclude 'justfile' ./* {{rpi_user}}@{{rpi_hostname}}:/home/pi/myblog/
+
+# Start the service
+start:
+    ssh {{rpi_user}}@{{rpi_hostname}} 'cd myblog && docker compose up -d --build'
+
+# Stop the service
+stop:
+    ssh {{rpi_user}}@{{rpi_hostname}} 'cd myblog && docker compose down'
+
+# Display Docker logs for service
+log service:
+    ssh {{rpi_user}}@{{rpi_hostname}} 'docker logs -f myblog'

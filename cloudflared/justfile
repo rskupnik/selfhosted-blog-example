@@ -1,0 +1,18 @@
+rpi_user := "your_rpi_user"
+rpi_hostname := "your_rpi_hostname_or_ip"
+
+# Deploy the files
+deploy:
+    rsync -ah --inplace --no-perms --exclude 'justfile' ./* {{rpi_user}}@{{rpi_hostname}}:/home/pi/cloudflared/
+
+# Start the service
+start:
+    ssh {{rpi_user}}@{{rpi_hostname}} 'cd cloudflared && docker compose up -d --build'
+
+# Stop the service
+stop:
+    ssh {{rpi_user}}@{{rpi_hostname}} 'cd cloudflared && docker compose down'
+
+# Display Docker logs for service
+log service:
+    ssh {{rpi_user}}@{{rpi_hostname}} 'docker logs -f cloudflared'
